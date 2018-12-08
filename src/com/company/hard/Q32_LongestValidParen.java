@@ -1,20 +1,29 @@
 package com.company.hard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Q32_LongestValidParen {
 
     //    Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed) parentheses substring.
     public static void main(String[] args) {
         // edge test case
 //        int ans =
-        int ans1 = longestValidParentheses(")()");
+        List<String> inputs = new ArrayList<>();
+        inputs.add(")()())");
+        inputs.add(")()");
+        inputs.add(")()())()()(");
+        inputs.add("()");
 
-        int ans2 = longestValidParentheses(")()())()()(");
-        System.out.println(ans2);
+        for (String s : inputs) {
+            int ans = longestValidParentheses(s);
+            System.out.println(s + ":" + ans);
+        }
     }
 
-    public static int longestValidParentheses(String s){
+    public static int longestValidParentheses(String s) {
         int longest = 0;
-        for (int i = 0; i < s.length(); i ++){
+        for (int i = 0; i < s.length(); i++) {
             String toValidate = s.substring(i);
             int longestSeen = longestValidParenthesesHelper(toValidate);
             if (longestSeen > longest)
@@ -23,6 +32,7 @@ public class Q32_LongestValidParen {
         return longest;
 
     }
+
     public static int longestValidParenthesesHelper(String s) {
         int longest = 0;
         char leftParen = '(';
@@ -35,7 +45,8 @@ public class Q32_LongestValidParen {
         if (s == null || s.isEmpty()) {
             return longest;
         }
-        if (s.charAt(0) == rightParen){
+
+        if (s.charAt(0) == rightParen) {
             return 0;
         }
 
@@ -47,8 +58,9 @@ public class Q32_LongestValidParen {
             }
 
             int currentValidLength = validate(leftCount, rightCount);
-            if (currentValidLength < 0){
-                
+//            invalid, must discontinue
+            if (currentValidLength < 0) {
+                return longest;
             }
             if (currentValidLength > longest) {
                 longest = currentValidLength;
@@ -61,8 +73,8 @@ public class Q32_LongestValidParen {
         if (rightCount == leftCount) {
             return leftCount + rightCount;
         }
-        if (rightCount > leftCount){
-            return - 1;
+        if (rightCount > leftCount) {
+            return -1;
         }
         return 0;
     }
