@@ -5,6 +5,12 @@ public class TreeNode {
     public TreeNode left;
     public TreeNode right;
 
+    public TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+
     public TreeNode(int x) {
         val = x;
     }
@@ -16,5 +22,15 @@ public class TreeNode {
                 ", left=" + left +
                 ", right=" + right +
                 '}';
+    }
+
+    public static void inOrderTraverse(TreeNode root) {
+        if (root == null){
+            return;
+        }
+        System.out.println(root.val);
+        inOrderTraverse(root.left);
+        inOrderTraverse(root.right);
+
     }
 }
