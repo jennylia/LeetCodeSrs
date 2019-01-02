@@ -9,6 +9,7 @@ public class DijkstraDemo {
     public static void main(String[] args) {
         System.out.println("hello");
 
+        // N^2 (or V^2)
         //Wikipedia graph
         GraphNodeWithWeights n1 = new GraphNodeWithWeights(1, 0);
         GraphNodeWithWeights n2 = new GraphNodeWithWeights(2, Integer.MAX_VALUE);

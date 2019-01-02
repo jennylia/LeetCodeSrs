@@ -15,6 +15,8 @@ public class PrimmsTreeDemo {
 
         System.out.println(mst_edge);
 
+        //Worst case O (n^2) -- or use head o(V+E logV) (doing this for ever single node)
+
     }
 
     private static GeekGraph prims(GeekGraph g) {
