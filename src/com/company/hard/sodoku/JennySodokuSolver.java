@@ -1,9 +1,6 @@
 package com.company.hard.sodoku;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class JennySodokuSolver {
     private static void printBoard(int[][] board) {
@@ -15,20 +12,49 @@ public class JennySodokuSolver {
         }
     }
 
+    //        int[][] board = {
+//                {0, 1, 0, 0, 0, 0, 2, 0, 0},
+//                {4, 0, 9, 8, 7, 1, 0, 0, 3},
+//                {0, 0, 3, 0, 0, 0, 4, 0, 0},
+//                {0, 4, 5, 3, 0, 7, 0, 0, 0},
+//                {0, 8, 0, 0, 4, 0, 0, 9, 0},
+//                {0, 0, 0, 2, 0, 5, 3, 8, 0},
+//                {0, 0, 4, 7, 5, 0, 9, 0, 0},
+//                {5, 0, 0, 6, 2, 3, 8, 0, 7},
+//                {0, 0, 7, 0, 0, 0, 0, 5, 0},
+//        };
+
     public static void main(String[] args) {
         int[][] board = {
-                {0, 1, 0, 0, 0, 0, 2, 0, 0},
-                {4, 0, 9, 8, 7, 1, 0, 0, 3},
-                {0, 0, 3, 0, 0, 0, 4, 0, 0},
-                {0, 4, 5, 3, 0, 7, 0, 0, 0},
-                {0, 8, 0, 0, 4, 0, 0, 9, 0},
-                {0, 0, 0, 2, 0, 5, 3, 8, 0},
-                {0, 0, 4, 7, 5, 0, 9, 0, 0},
-                {5, 0, 0, 6, 2, 3, 8, 0, 7},
-                {0, 0, 7, 0, 0, 0, 0, 5, 0},
+                {0, 3, 0, 0, 0, 2, 0, 0, 1},
+                {0, 0, 1, 3, 0, 4, 9, 0, 8},
+                {0, 2, 0, 8, 0, 0, 4, 0, 0},
+                {5, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 9, 0, 0, 0, 6},
+                {0, 0, 0, 0, 0, 0, 0, 0, 7},
+                {0, 0, 2, 0, 0, 9, 0, 6, 0},
+                {3, 0, 9, 5, 0, 8, 7, 0, 0},
+                {6, 0, 0, 2, 0, 0, 0, 9, 0},
         };
+//        int[][] board = scanBoard();
 
+        printBoard(board);
         solve(board);
+    }
+
+    private static int[][] scanBoard() {
+        Scanner scanner = new Scanner(System.in);
+        int[][] board = new int[9][9];
+        for (int i =0; i < 9; i ++){
+            for (int j =0; j < 9; j ++){
+                System.out.println("enter for row " + i + "col " + j);
+                int val = scanner.nextInt();
+                board[i][j] = val;
+            }
+
+        }
+        System.out.println("finished");
+        return board;
     }
 
 
@@ -53,43 +79,59 @@ public class JennySodokuSolver {
         System.out.println("first candidate run through");
         b.printBoard();
 
+        int iteration = 1;
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                Cell c = b.getCell(i, j);
-                if (c.val == 0 && c.candidates.size() == 1) {
-                    System.out.println("only 1 candidate " + i + " " + j);
-                    c.val = c.candidates.iterator().next();
+        while (solved(b) == false) {
 
-                    c.candidates.remove(c.val);
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    Cell c = b.getCell(i, j);
+                    if (c.val == 0 && c.candidates.size() == 1) {
+                        System.out.println("only 1 candidate " + i + " " + j);
+                        c.val = c.candidates.iterator().next();
 
-                    //remove all the other candidates for the row
-                    System.out.println(c.val);
-                    System.out.println(c.candidates);
-                    removeOtherCandidates(b, c, i, j);
+                        c.candidates.remove(c.val);
+
+                        //remove all the other candidates for the row
+                        System.out.println(c.val);
+                        System.out.println(c.candidates);
+                        removeOtherCandidates(b, c, i, j);
+                    }
+
                 }
-
             }
+            System.out.println(iteration + " run through ======================");
+            iteration++;
+            b.printBoard();
         }
-
-        System.out.println("second candidate run through");
-        b.printBoard();
 
 
     }
 
+    private static boolean solved(Board b) {
+        boolean full = true;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (b.getCell(i, j).val == 0) {
+                    return false;
+                }
+            }
+        }
+        return full;
+    }
+
     private static void removeOtherCandidates(Board board, Cell cell, int row, int column) {
         // eliminate all row candidates
-        for (int i = 0; i < 9; i ++){
+        for (int i = 0; i < 9; i++) {
             Cell c = board.getCell(row, i);
-            if (c.val == 0){
+            if (c.val == 0) {
                 c.candidates.remove(cell.val);
             }
         }
 
-        for (int i = 0; i < 9; i ++){
+        for (int i = 0; i < 9; i++) {
             Cell c = board.getCell(i, column);
-            if (c.val == 0){
+            if (c.val == 0) {
                 c.candidates.remove(cell.val);
             }
         }
