@@ -6,9 +6,10 @@ public class Q916_WordSubset {
     public static void main(String[] args) {
         System.out.println("hello");
 //        String[] A = {"amazon", "apple", "facebook", "google", "leetcode"};
-        String[] A = {"leetcode"};
+//        String[] A = {"facebook", "google", "leetcode"};
 
-        String[] B = {"e","oo"};
+        String[] A = {"acaac", "cccbb", "aacbb", "caacc", "bcbbb"};
+        String[] B = {"c", "cc", "b"};
 
         List<String> ex1 = wordSubsets(A, B);
         System.out.println(ex1);
@@ -38,11 +39,12 @@ public class Q916_WordSubset {
 
         for (String bLetter : bSet.keySet()) {
             if (wordCount.containsKey(bLetter)) {
-                Integer bCount = wordCount.get(bLetter);
-                if (bCount == 0) {
+                Integer wCount = wordCount.get(bLetter);
+                if (wCount == 0) {
                     return false;
-                } else {
-                    wordCount.put(bLetter, bCount - 1);
+                }
+                if (wCount < bSet.get(bLetter)) {
+                    return false;
                 }
             } else {
                 return false;
@@ -65,13 +67,12 @@ public class Q916_WordSubset {
             int currentCount = wordCount.get(s);
             if (globalMaxMap.containsKey(s)) {
                 int globalCount = globalMaxMap.get(s);
-                if (globalCount > currentCount) {
-                    globalMaxMap.put(s, currentCount);
-                }
+                globalMaxMap.put(s, Math.max(globalCount, currentCount));
             } else {
                 globalMaxMap.put(s, currentCount);
             }
         }
+
     }
 
     public static List<String> wordSubsetsOld(String[] A, String[] B) {
